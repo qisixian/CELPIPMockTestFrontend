@@ -1,6 +1,8 @@
 import {Element} from 'react-scroll';
-import {Col, Row} from 'antd';
+import {Radio, Button, Dropdown, Space, Select, Col, Row} from 'antd';
+import type {MenuProps, RadioChangeEvent } from 'antd';
 import {useRef, useState} from "react";
+import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 
 interface Props {
     articleInstruction: String;
@@ -14,11 +16,12 @@ interface Props {
 function DoubleScroller({articleInstruction, articleContent1, questionInstruction1, articleContent2Index, articleContent2, questionInstruction2}: Props) {
 
     const colStyle = {
-        height: '82vh',
+        height: '77vh',
         // height: '100%',
         // maxHeight: '100%',
         // overflowY: scroll,
-        overflow: 'scroll',
+        overflowY: 'scroll',
+        overflowX: 'hidden'
         // border: '1px solid black',
     }
 
@@ -58,6 +61,19 @@ function DoubleScroller({articleInstruction, articleContent1, questionInstructio
         setIsSyncing(false);
     };
 
+    // const splitedContent = articleContent2.split('{{}}');
+
+    const handleChange = (value: string) => {
+        console.log(`selected ${value}`);
+    };
+
+    const [value, setValue] = useState(1);
+
+    const onChange = (e: RadioChangeEvent) => {
+        console.log('radio checked', e.target.value);
+        setValue(e.target.value);
+    };
+
     return (
         <div>
             <Row>
@@ -74,8 +90,30 @@ function DoubleScroller({articleInstruction, articleContent1, questionInstructio
                 <Col span={12}>
                     <div style={colStyle} ref={div2Ref} onScroll={handleScroll2}>
                         <p>{questionInstruction1}</p>
+
+                        <Select
+                            style={{ width: 100 }}
+                            onChange={handleChange}
+                            options={[
+                                { value: 'jack'},
+                                { value: 'lucy'},
+                                { value: 'Yiminghe'},
+                                { value: 'disabled'},
+                            ]}
+                        />
                         <p>{articleContent2}</p>
                         <p>{questionInstruction2}</p>
+
+                        <Select
+                            style={{ width: 100 }}
+                            onChange={handleChange}
+                            options={[
+                                { value: 'jack'},
+                                { value: 'lucy'},
+                                { value: 'Yiminghe'},
+                                { value: 'disabled'},
+                            ]}
+                        />
                         {/*<Element name="section2">*/}
                         {/*    <section style={{ height: '150vh', backgroundColor: 'lightgreen' }}>*/}
                         {/*    </section>*/}
