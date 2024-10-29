@@ -13,6 +13,11 @@ interface Props {
     questionInstruction2: String;
 }
 
+const highlightStyle = {
+    fontWeight: 'bold',
+    color: 'blue',
+};
+
 function DoubleScroller({articleInstruction, articleContent1, questionInstruction1, articleContent2Index, articleContent2, questionInstruction2}: Props) {
 
     const colStyle = {
@@ -79,7 +84,7 @@ function DoubleScroller({articleInstruction, articleContent1, questionInstructio
             <Row>
                 <Col span={12}>
                     <div style={colStyle} ref={div1Ref} onScroll={handleScroll1}>
-                        <p>{articleInstruction}</p>
+                        <p style={highlightStyle}>{articleInstruction}</p>
                         <p>{articleContent1}</p>
                         {/*<Element name="section1">*/}
                         {/*    <section style={{ height: '120vh', backgroundColor: 'lightblue' }}>*/}
@@ -89,7 +94,7 @@ function DoubleScroller({articleInstruction, articleContent1, questionInstructio
                 </Col>
                 <Col span={12}>
                     <div style={colStyle} ref={div2Ref} onScroll={handleScroll2}>
-                        <p>{questionInstruction1}</p>
+                        <p style={highlightStyle}>{questionInstruction1}</p>
 
                         <Select
                             style={{ width: 100 }}
@@ -102,7 +107,7 @@ function DoubleScroller({articleInstruction, articleContent1, questionInstructio
                             ]}
                         />
                         <p>{articleContent2}</p>
-                        <p>{questionInstruction2}</p>
+                        <p style={highlightStyle}>{questionInstruction2}</p>
 
                         <Select
                             style={{ width: 100 }}

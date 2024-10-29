@@ -1,4 +1,4 @@
-import {createContext, useState} from 'react'
+import {createContext, useEffect, useState} from 'react'
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import '../App.css'
@@ -7,6 +7,7 @@ import { Button, notification } from 'antd';
 
 import {Routes, Route} from "react-router-dom";
 import MyCard from "../components/MyCard";
+import MyImage from '../components/MyImage';
 
 
 
@@ -33,6 +34,7 @@ function Home() {
     return (
         <>
             <h1>CELPIP Test</h1>
+            <MyImage imageUrl="http://localhost:8080/media/2"/>
             <MyList items={data}>1</MyList>
             {contextHolder}
             <Button type="primary" onClick={() => openNotification("hi")}>Hi</Button>

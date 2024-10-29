@@ -1,7 +1,7 @@
 import getArticle from "../requests/Requests";
 import {Outlet, useLoaderData, useParams, Link, useNavigate} from 'react-router-dom';
-import {useContext, useEffect, useState} from "react";
-import { Button, Flex, Layout } from 'antd';
+import {useContext, useEffect, useRef, useState} from "react";
+import { Button, Flex, Layout, Modal } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 import axios from "axios";
 import DoubleScroller from "../components/DoubleScroller";
@@ -33,19 +33,51 @@ const layoutStyle = {
 };
 
 function Timer() {
-    const [count, setCount] = useState(600);
+
+    const getInitialTime = () => {
+        const savedTime = localStorage.getItem('timer');
+        return savedTime ? parseInt(savedTime, 10) : 600;
+    };
+
+    const [time, setTime] = useState(getInitialTime);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const intervalId = useRef<number | undefined>(undefined);
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCount(prevCount => prevCount - 1);
-            console.log("setting timer")
-        }, 1000);
+        if (time > 0) {
+            intervalId.current = window.setInterval(() => {
+                setTime((prevTime) => {
+                    const newTime = prevTime - 1;
+                    localStorage.setItem('timer', newTime.toString());
+                    return newTime;
+                });
+            }, 1000);
+        } else {
+            localStorage.removeItem('timer');
+            clearInterval(intervalId.current);
+            if (!isModalOpen) {
+                setIsModalOpen(true);
+            }
+        }
 
-        // 清除 interval，防止内存泄漏
-        return () => clearInterval(intervalId);
-    }, []);  // 空数组确保仅在组件挂载时执行一次
+        return () => {
+            localStorage.removeItem('timer');
+            clearInterval(intervalId.current);
+        };
+    }, [time]);
 
-    return <span>{count}</span>;
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    return (
+        <>
+            <span>{time}</span>
+            <Modal title="Times up" open={isModalOpen} onOk={handleOk}>
+                <p>click OK to finish tests</p>
+            </Modal>
+        </>
+    );
 }
 
 
@@ -92,7 +124,7 @@ function Reading() {
                     <p> </p>
                     <p>time remaining: <b><Timer/> minutes</b></p>
                     <Button type={"primary"} onClick={()=>{navigate(`/r/article/${articleId+1}`)}}>
-                        Next
+                        NEXT
                     </Button>
                 </Flex>
             </Footer>
@@ -109,7 +141,7 @@ function Reading() {
             <Footer>
                 <Flex gap="middle" justify={'space-between'} align={'center'}>
                     <Button>Answer Key</Button>
-                    <Button type={"primary"} danger onClick={()=>{navigate(`/r/article/${articleId-1}`)}}>Back</Button>
+                    <Button type={"primary"} danger onClick={()=>{navigate(`/r/article/${articleId-1}`)}}>BACK</Button>
                 </Flex>
             </Footer>
         </Layout>
