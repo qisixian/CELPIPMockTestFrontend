@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default function getArticle() {
     const instance = axios.create();
-    instance.get("http://localhost:8080/")
+    instance.get("http://localhost:8080/article/")
         .then(function (response) {
             console.log(response.data);
             console.log(response.status);

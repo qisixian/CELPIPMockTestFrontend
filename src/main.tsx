@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         path: "/r/article/:id",
         element: <Reading/>,
         loader: async (params) => {
-            return await axios.get("http://localhost:8080/11"+params.params.id)
+            return await axios.get("http://localhost:8080/article/11"+params.params.id)
                 .then((response) => {
                     return response.data
                 });
